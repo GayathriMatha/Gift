@@ -22,7 +22,7 @@
       position: relative;
     }
 
-    /* Background + cheers bubbles – warmer, more alive */
+    /* Background + cheers bubbles */
     .balloons-bg {
       position: fixed;
       inset: 0;
@@ -219,6 +219,9 @@
       color: #a89088;
       letter-spacing: 0.1em;
       flex-shrink: 0;
+      width: 100%;
+      text-align: center;
+      margin-top: 0.5rem;
     }
 
     .footer span { color: #d4a098; }
@@ -303,6 +306,22 @@
       margin-bottom: 0.5rem;
     }
 
+    .main-content.hidden { display: none !important; }
+    #letterSection { display: none; padding: 2rem 1.5rem; max-width: 880px; margin: 0 auto; }
+    #letterSection.visible { display: block; }
+    .letter-paper {
+      background: rgba(255,255,255,0.95);
+      padding: 3.5rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      font-size: 1.2rem;
+      line-height: 1.75;
+      color: #4a3d38;
+    }
+    .letter-paper .greet { font-weight: 600; margin-bottom: 1.25rem; font-size: 1.35rem; }
+    .letter-paper .sign { margin-top: 2rem; text-align: right; color: #8a756d; font-size: 1.15rem; }
+    .letter-paper .heart { color: #d4a098; }
+
   </style>
 </head>
 <body>
@@ -324,6 +343,7 @@
   </div>
 
   <div class="page">
+    <div class="main-content" id="mainContent">
     <div class="hero">
       <h1 class="title">For You, Chinna</h1>
       <p class="subtitle">Happy Valentine's Day</p>
@@ -331,28 +351,28 @@
 
     <div class="cards-wrap">
     <div class="cards">
-      <div class="card" data-src="photo0.png" data-msg="Life is more fun when you are around. Thank you for being there for me." data-pop-msg="You are family">
+      <div class="card" data-index="0" data-src="photo0.png" data-msg="Life is more fun when you are around. Thank you for being there for me." data-pop-msg="You are family">
         <div class="img-wrap">
           <span class="card-heart">♥</span>
           <p class="card-msg">Life is more fun when you are around. Thank you for being there for me.</p>
         </div>
       </div>
 
-      <div class="card" data-src="photo3.png" data-msg="I pray we stay friends forever. You mean a lot to me." data-pop-msg="Proud of you">
+      <div class="card" data-index="1" data-src="photo3.png" data-msg="I pray we stay friends forever. You mean a lot to me." data-pop-msg="Proud of you">
         <div class="img-wrap">
           <span class="card-heart">♥</span>
           <p class="card-msg">I pray we stay friends forever. You mean a lot to me.</p>
         </div>
       </div>
 
-      <div class="card" data-src="photo7.png" data-msg="I feel good when I am with you. Any place is fine if you are there." data-pop-msg="Stay with me">
+      <div class="card" data-index="2" data-src="photo7.png" data-msg="I feel good when I am with you. Any place is fine if you are there." data-pop-msg="Stay with me">
         <div class="img-wrap">
           <span class="card-heart">♥</span>
           <p class="card-msg">I feel good when I am with you. Any place is fine if you are there.</p>
         </div>
       </div>
 
-      <div class="card" data-src="photo8.png" data-msg="When I am sad, you make me laugh. I am glad I have you." data-pop-msg="Anything for you">
+      <div class="card" data-index="3" data-src="photo8.png" data-msg="When I am sad, you make me laugh. I am glad I have you." data-pop-msg="Anything for you">
         <div class="img-wrap">
           <span class="card-heart">♥</span>
           <p class="card-msg">When I am sad, you make me laugh. I am glad I have you.</p>
@@ -362,6 +382,17 @@
     </div>
 
     <p class="footer">Made with love <span>♥</span></p>
+    </div>
+
+    <section id="letterSection">
+      <div class="letter-paper">
+        <p class="greet">Dear Chinna, ❤️</p>
+        <p>I don't say it enough, but you are one of the best things in my life. You never let me feel alone. I can tell you anything and you never judge. 🤗</p>
+        <p>You make me feel safe. I trust you with my thoughts. No matter what happens, I want you in my life. 💛</p>
+        <p>I am lucky to have you. I am always there for you. Happy Valentine's Day. 🌹 💕</p>
+        <p class="sign">— Your Mental, with love 🌹</p>
+      </div>
+    </section>
   </div>
 
   <div class="overlay" id="overlay">
@@ -378,12 +409,17 @@
     var pop = document.getElementById('pop');
     var popImg = document.getElementById('popImg');
     var popMsg = document.getElementById('popMsg');
+    var mainContent = document.getElementById('mainContent');
+    var letterSection = document.getElementById('letterSection');
+    var openedCards = new Set();
 
     document.querySelectorAll('.card').forEach(function(card) {
       card.addEventListener('click', function() {
         var src = this.getAttribute('data-src');
         var popText = this.getAttribute('data-pop-msg') || this.getAttribute('data-msg');
+        var idx = this.getAttribute('data-index');
         if (!src) return;
+        if (idx !== null) openedCards.add(idx);
         popImg.src = src;
         popMsg.textContent = popText || '';
         pop.classList.toggle('rotate-cw', this.classList.contains('rotate-cw'));
@@ -394,6 +430,10 @@
     function closeOverlay() {
       overlay.classList.remove('on');
       popImg.src = '';
+      if (openedCards.size >= 4 && mainContent && letterSection) {
+        mainContent.classList.add('hidden');
+        letterSection.classList.add('visible');
+      }
     }
     if (overlay) overlay.addEventListener('click', function(e) {
       if (!pop.contains(e.target)) closeOverlay();
