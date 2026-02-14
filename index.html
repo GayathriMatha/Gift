@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You — Valentine's Day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Italiana&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: #2d2a26;
+      position: relative;
+    }
+
+    /* Background + cheers bubbles – warmer, more alive */
+    .balloons-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(165deg, #ffebe8 0%, #ffddd8 35%, #ffe8e2 65%, #fff2ee 100%);
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .cheers {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .cheers .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9), rgba(255,230,220,0.35));
+      box-shadow: inset 0 -2px 8px rgba(255,200,180,0.25);
+      animation: rise 6s ease-in-out infinite;
+    }
+
+    .cheers .bubble:nth-child(1) { width: 32px; height: 32px; left: 10%; bottom: -5%; animation-delay: 0s; }
+    .cheers .bubble:nth-child(2) { width: 20px; height: 20px; left: 26%; bottom: -8%; animation-delay: -1s; }
+    .cheers .bubble:nth-child(3) { width: 28px; height: 28px; left: 46%; bottom: -4%; animation-delay: -2.2s; }
+    .cheers .bubble:nth-child(4) { width: 22px; height: 22px; left: 62%; bottom: -6%; animation-delay: -0.6s; }
+    .cheers .bubble:nth-child(5) { width: 26px; height: 26px; left: 80%; bottom: -5%; animation-delay: -3s; }
+    .cheers .bubble:nth-child(6) { width: 18px; height: 18px; left: 6%; bottom: -12%; animation-delay: -3.8s; }
+    .cheers .bubble:nth-child(7) { width: 30px; height: 30px; left: 36%; bottom: -10%; animation-delay: -1.5s; }
+    .cheers .bubble:nth-child(8) { width: 24px; height: 24px; left: 56%; bottom: -8%; animation-delay: -2.6s; }
+    .cheers .bubble:nth-child(9) { width: 20px; height: 20px; left: 76%; bottom: -9%; animation-delay: -0.3s; }
+    .cheers .bubble:nth-child(10) { width: 26px; height: 26px; left: 20%; bottom: -14%; animation-delay: -4.2s; }
+    .cheers .bubble:nth-child(11) { width: 28px; height: 28px; left: 70%; bottom: -7%; animation-delay: -1.8s; }
+    .cheers .bubble:nth-child(12) { width: 22px; height: 22px; left: 42%; bottom: -11%; animation-delay: -2.9s; }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0.6; }
+      20% { opacity: 0.95; }
+      100% { transform: translateY(-120vh) scale(0.85); opacity: 0.25; }
+    }
+
+    /* Single page – no scroll */
+    .page {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      gap: 0.75rem;
+    }
+
+    .hero {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .title {
+      font-family: 'Italiana', serif;
+      font-size: 4rem;
+      color: #5c4540;
+      letter-spacing: 0.06em;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+      animation: titleIn 0.8s ease;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      color: #8a756d;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.35rem;
+      font-weight: 500;
+    }
+
+    @keyframes titleIn {
+      from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .cards-wrap {
+      padding: 1.5rem 1.75rem;
+      background: rgba(255,255,255,0.25);
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: 0 4px 24px rgba(140,80,70,0.06);
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex: 1;
+      min-height: 0;
+      max-width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      width: clamp(240px, 42vw, 320px);
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(160,90,80,0.12), 0 0 0 1px rgba(255,200,190,0.4) inset;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1), box-shadow 0.4s ease;
+      animation-duration: 0.6s;
+      animation-timing-function: ease;
+      animation-fill-mode: backwards;
+    }
+
+    .card:nth-child(1) { animation-name: cardIn1; animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-name: cardIn2; animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-name: cardIn3; animation-delay: 0.25s; }
+    .card:nth-child(4) { animation-name: cardIn4; animation-delay: 0.3s; }
+
+    @keyframes cardIn1 {
+      from { opacity: 0; transform: translateY(20px) scale(0.96) rotate(-2.5deg); }
+      to { opacity: 1; transform: translateY(0) scale(1) rotate(-2.5deg); }
+    }
+    @keyframes cardIn2 {
+      from { opacity: 0; transform: translateY(20px) scale(0.96) rotate(1.5deg); }
+      to { opacity: 1; transform: translateY(0) scale(1) rotate(1.5deg); }
+    }
+    @keyframes cardIn3 {
+      from { opacity: 0; transform: translateY(20px) scale(0.96) rotate(-1.8deg); }
+      to { opacity: 1; transform: translateY(0) scale(1) rotate(-1.8deg); }
+    }
+    @keyframes cardIn4 {
+      from { opacity: 0; transform: translateY(20px) scale(0.96) rotate(1.2deg); }
+      to { opacity: 1; transform: translateY(0) scale(1) rotate(1.2deg); }
+    }
+
+    .card:nth-child(1) { transform: rotate(-2.5deg); }
+    .card:nth-child(2) { transform: rotate(1.5deg); }
+    .card:nth-child(3) { transform: rotate(-1.8deg); }
+    .card:nth-child(4) { transform: rotate(1.2deg); }
+
+    .card:hover {
+      transform: scale(1.06) rotate(0deg) translateY(-4px);
+      box-shadow: 0 20px 48px rgba(160,90,80,0.2), 0 0 0 1px rgba(255,220,210,0.5) inset;
+    }
+
+    .card .img-wrap {
+      width: 100%;
+      min-height: 180px;
+      padding: 1.25rem 1rem;
+      overflow: hidden;
+      background: linear-gradient(145deg, #faf0ed, #f5e8e4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .card .img-wrap .card-heart {
+      font-size: 2.25rem;
+      color: #d4a89a;
+      flex-shrink: 0;
+    }
+
+    .card .img-wrap .card-msg {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #5c4540;
+      text-align: center;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .card .img-wrap img {
+      display: none;
+    }
+
+    .card.rotate-cw .img-wrap img { transform: rotate(90deg) scale(1.15); }
+
+    .card > .msg {
+      display: none;
+    }
+
+    .footer {
+      font-size: 1.25rem;
+      color: #a89088;
+      letter-spacing: 0.1em;
+      flex-shrink: 0;
+    }
+
+    .footer span { color: #d4a098; }
+
+    /* Overlay – polaroid modal, done properly */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(30,22,20,0.65);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay.on { display: flex; opacity: 1; }
+
+    .overlay .pop {
+      background: transparent;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+      transform: scale(0.9) rotate(-3deg);
+      transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+
+    .overlay.on .pop { transform: scale(1) rotate(2deg); }
+
+    /* Polaroid: white frame + paper + tape */
+    .overlay .pop .polaroid-frame {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: #faf6f2;
+      padding: 16px 16px 24px;
+      border: 3px solid #fff;
+      border-radius: 2px;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.25);
+    }
+
+    /* Photo area – hard clip so image never bleeds into caption */
+    .overlay .pop .polaroid-frame .img-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      flex-shrink: 0;
+      overflow: hidden;
+      background: #e5ddd8;
+      clip-path: inset(0);
+      contain: layout paint;
+    }
+
+    .overlay .pop .polaroid-frame .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    .overlay .pop.rotate-cw .polaroid-frame .img-wrap img { transform: rotate(90deg) scale(1.12); }
+
+    /* Caption – in normal flow below photo, so it never gets covered */
+    .overlay .pop .polaroid-frame .msg {
+      display: block;
+      margin: 18px 4px 0;
+      padding: 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #4a3d38;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .overlay .pop .polaroid-frame .msg::before {
+      content: '♥';
+      display: block;
+      font-size: 0.85rem;
+      color: #c9a08a;
+      margin-bottom: 0.5rem;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="balloons-bg">
+    <div class="cheers">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="hero">
+      <h1 class="title">For You, Chinna</h1>
+      <p class="subtitle">Happy Valentine's Day</p>
+    </div>
+
+    <div class="cards-wrap">
+    <div class="cards">
+      <div class="card" data-src="images/photo0.png" data-msg="Life is more fun when you are around. Thank you for being there for me." data-pop-msg="You are family">
+        <div class="img-wrap">
+          <span class="card-heart">♥</span>
+          <p class="card-msg">Life is more fun when you are around. Thank you for being there for me.</p>
+        </div>
+      </div>
+
+      <div class="card" data-src="images/photo3.png" data-msg="I pray we stay friends forever. You mean a lot to me." data-pop-msg="Proud of you">
+        <div class="img-wrap">
+          <span class="card-heart">♥</span>
+          <p class="card-msg">I pray we stay friends forever. You mean a lot to me.</p>
+        </div>
+      </div>
+
+      <div class="card" data-src="images/photo7.png" data-msg="I feel good when I am with you. Any place is fine if you are there." data-pop-msg="Stay with me">
+        <div class="img-wrap">
+          <span class="card-heart">♥</span>
+          <p class="card-msg">I feel good when I am with you. Any place is fine if you are there.</p>
+        </div>
+      </div>
+
+      <div class="card" data-src="images/photo8.png" data-msg="When I am sad, you make me laugh. I am glad I have you." data-pop-msg="Anything for you">
+        <div class="img-wrap">
+          <span class="card-heart">♥</span>
+          <p class="card-msg">When I am sad, you make me laugh. I am glad I have you.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <p class="footer">Made with love <span>♥</span></p>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="pop" id="pop">
+      <div class="polaroid-frame">
+        <div class="img-wrap"><img id="popImg" src="" alt=""></div>
+        <p class="msg" id="popMsg"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var overlay = document.getElementById('overlay');
+    var pop = document.getElementById('pop');
+    var popImg = document.getElementById('popImg');
+    var popMsg = document.getElementById('popMsg');
+
+    document.querySelectorAll('.card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var src = this.getAttribute('data-src');
+        var popText = this.getAttribute('data-pop-msg') || this.getAttribute('data-msg');
+        if (!src) return;
+        popImg.src = src;
+        popMsg.textContent = popText || '';
+        pop.classList.toggle('rotate-cw', this.classList.contains('rotate-cw'));
+        overlay.classList.add('on');
+      });
+    });
+
+    function closeOverlay() {
+      overlay.classList.remove('on');
+      popImg.src = '';
+    }
+    if (overlay) overlay.addEventListener('click', function(e) {
+      if (!pop.contains(e.target)) closeOverlay();
+    });
+  </script>
+</body>
+</html>
